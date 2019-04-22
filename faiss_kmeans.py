@@ -14,6 +14,7 @@ def timing(f):
     # https://medium.com/pythonhive/python-decorator-to-measure-the-execution-time-of-methods-fa04cb6bb36d
     # https://codereview.stackexchange.com/questions/169870/decorator-to-measure-execution-time-of-a-function
     """
+
     @wraps(f)
     def wrapper(*args, **kwargs):
         start = time()

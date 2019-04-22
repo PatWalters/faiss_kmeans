@@ -17,6 +17,7 @@ def timing(f):
     # https://medium.com/pythonhive/python-decorator-to-measure-the-execution-time-of-methods-fa04cb6bb36d
     # https://codereview.stackexchange.com/questions/169870/decorator-to-measure-execution-time-of-a-function
     """
+
     @wraps(f)
     def wrapper(*args, **kwargs):
         start = time()
@@ -26,6 +27,7 @@ def timing(f):
         return result
 
     return wrapper
+
 
 @timing
 def make_np_array(lst, dtype=np.float32):
@@ -83,16 +85,19 @@ def generate_fingerprints(infile_name):
 
 
 @timing
-def main():
+def main(input_smiles_file, output_fp_file):
     """
     Generate fingerprints and write to an hdf5 file
     :return:
     """
-    fp_list, smiles_list, name_list = generate_fingerprints(sys.argv[1])
-    outfile_name = sys.argv[2]
+    fp_list, smiles_list, name_list = generate_fingerprints(input_smiles_file)
+    outfile_name = output_fp_file
     fp_array = make_np_array(fp_list)
     save_data(fp_array, smiles_list, name_list, outfile_name)
 
 
 if __name__ == "__main__":
-    main()
+    if len(sys.argv) != 3:
+        print(f"usage: {sys.argv[0]} infile.smi outfile.h5")
+        sys.exit(1)
+    main(sys.argv[1], sys.argv[2])
